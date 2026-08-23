@@ -1,0 +1,239 @@
+export type OperatingRegime = 'NORMAL' | 'DELAYED' | 'DISRUPTED';
+export type ReliabilityCategory = 'HIGH' | 'MEDIUM' | 'LOW';
+
+export interface Station {
+  station_code: string;
+  station_name: string;
+  sequence: number;
+  scheduled_arrival: string;
+  scheduled_departure: string;
+  distance_km: number;
+  latitude?: number;
+  longitude?: number;
+  state?: string;
+  zone?: string;
+}
+
+export interface TrainInfo {
+  train_id: string;
+  train_name: string;
+  train_type: string;
+  origin_station_code: string;
+  origin_station_name: string;
+  destination_station_code: string;
+  destination_station_name: string;
+  total_distance_km: number;
+  total_stations: number;
+  scheduled_departure_time: string;
+  scheduled_arrival_time: string;
+}
+
+export interface TrainLiveStatus {
+  train_id: string;
+  train_name: string;
+  train_type: string;
+  current_station_code: string;
+  current_station_name: string;
+  current_station_sequence: number;
+  next_station_code: string;
+  next_station_name: string;
+  final_destination_code: string;
+  final_destination_name: string;
+  current_delay_min: number;
+  scheduled_arrival: string;
+  predicted_eta: string;
+  predicted_delay_min: number;
+  eta_lower_bound: string;
+  eta_upper_bound: string;
+  interval_width_min: number;
+  reliability_score: number;
+  reliability_category: ReliabilityCategory;
+  regime: OperatingRegime;
+  data_freshness_sec: number;
+  data_quality_score: number;
+  is_live: boolean;
+}
+
+export interface TrajectoryPoint {
+  station_code: string;
+  station_name: string;
+  sequence: number;
+  distance_km: number;
+  scheduled_arrival: string;
+  scheduled_departure: string;
+  actual_arrival?: string | null;
+  actual_departure?: string | null;
+  predicted_arrival: string;
+  predicted_delay_min: number;
+  lower_bound_arrival: string;
+  upper_bound_arrival: string;
+  interval_width_min: number;
+  reliability_score: number;
+  regime: OperatingRegime;
+  status: 'PASSED' | 'CURRENT' | 'UPCOMING';
+  actual_delay_min?: number | null;
+}
+
+export interface TrajectoryResponse {
+  train_id: string;
+  train_name: string;
+  journey_date: string;
+  current_station_code: string;
+  points: TrajectoryPoint[];
+  summary_trend: 'INCREASING' | 'STABLE' | 'RECOVERING';
+  max_predicted_delay_min: number;
+  min_predicted_delay_min: number;
+}
+
+export interface ReliabilityFactor {
+  name: string;
+  score: number;
+  weight: number;
+  weighted_contribution: number;
+  status: 'OPTIMAL' | 'ACCEPTABLE' | 'DEGRADED';
+  description: string;
+}
+
+export interface ReliabilityBreakdown {
+  overall_score: number;
+  category: ReliabilityCategory;
+  interpretation: string;
+  factors: ReliabilityFactor[];
+  recent_error_trend_min: number[];
+  historical_section_reliability: number;
+}
+
+export interface EvidenceItem {
+  id: string;
+  code: string;
+  category: string;
+  title: string;
+  detail: string;
+  metric_value: string;
+  impact_level: 'LOW' | 'MEDIUM' | 'HIGH';
+  icon_type: string;
+}
+
+export interface EvidenceResponse {
+  train_id: string;
+  current_station: string;
+  previous_eta: string;
+  current_eta: string;
+  eta_delta_min: number;
+  evidence_items: EvidenceItem[];
+  audit_notes: string;
+}
+
+export interface ReplayStepEvent {
+  step_index: number;
+  timestamp_simulated: string;
+  current_station_code: string;
+  current_station_name: string;
+  current_station_seq: number;
+  actual_delay_min: number;
+  predicted_eta: string;
+  predicted_delay_min: number;
+  interval_lower: string;
+  interval_upper: string;
+  interval_width_min: number;
+  reliability_score: number;
+  regime: OperatingRegime;
+  evidence_summary: string[];
+  is_disruption_event: boolean;
+  is_recovery_event: boolean;
+  narrative_description: string;
+  distance_remaining_km?: number;
+  scheduled_arrival?: string;
+}
+
+export interface ReplaySession {
+  session_id: string;
+  train_id: string;
+  train_name: string;
+  scenario_id: string;
+  scenario_name: string;
+  scenario_type: string;
+  total_steps: number;
+  current_step: number;
+  steps: ReplayStepEvent[];
+  is_complete: boolean;
+}
+
+export interface NetworkSummary {
+  total_monitored_trains: number;
+  normal_trains_count: number;
+  delayed_trains_count: number;
+  disrupted_trains_count: number;
+  low_reliability_count: number;
+  average_reliability_score: number;
+  average_network_delay_min: number;
+  active_corridors: Array<{
+    corridor_name: string;
+    train_count: number;
+    status: string;
+    avg_delay: number;
+    reliability: number;
+  }>;
+  system_freshness_sec: number;
+  system_status: string;
+}
+
+export interface MetricEvaluation {
+  model_name: string;
+  mae_min: number;
+  rmse_min: number;
+  median_absolute_error_min: number;
+  within_5_min_pct: number;
+  within_10_min_pct: number;
+  target_coverage_pct?: number | null;
+  observed_coverage_pct?: number | null;
+  average_interval_width_min?: number | null;
+}
+
+export interface RegimeMetricBreakdown {
+  regime: string;
+  sample_count: number;
+  baseline_schedule_mae: number;
+  baseline_current_delay_mae: number;
+  proposed_model_mae: number;
+  proposed_model_coverage_pct: number;
+  proposed_avg_width_min: number;
+}
+
+export interface HorizonMetricBreakdown {
+  horizon: string;
+  sample_count: number;
+  baseline_current_delay_mae: number;
+  proposed_model_mae: number;
+  proposed_coverage_pct: number;
+}
+
+export interface EvaluationReport {
+  evaluation_date: string;
+  dataset_name: string;
+  total_test_journeys: number;
+  total_test_observations: number;
+  models: MetricEvaluation[];
+  regime_breakdown: RegimeMetricBreakdown[];
+  horizon_breakdown: HorizonMetricBreakdown[];
+  calibration_curve: Array<{ requested_coverage: number; observed_coverage: number }>;
+}
+
+export interface DatasetAuditReport {
+  dataset_name: string;
+  file_format: string;
+  total_records: number;
+  total_trains: number;
+  total_journeys: number;
+  total_stations: number;
+  date_range_start: string;
+  date_range_end: string;
+  detected_columns: string[];
+  missing_mandatory_fields: string[];
+  missing_optional_fields: string[];
+  missing_values_percentage: Record<string, number>;
+  journey_completeness_pct: number;
+  timestamp_plausibility_pct: number;
+  data_quality_grade: string;
+  status: string;
+}
