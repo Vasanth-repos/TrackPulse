@@ -118,63 +118,104 @@ export const PassengerDashboard: React.FC<PassengerDashboardProps> = ({
       </div>
 
       {/* Conditional Layout: Standard Desktop vs Mobile Simulation Frame */}
-      <div className={isMobilePreview ? 'max-w-md mx-auto space-y-4 p-4 bg-slate-100 rounded-2xl border-4 border-slate-800 shadow-xl' : 'space-y-6'}>
-        
-        {/* VIEW 1: LIVE ETA STATUS */}
-        {activePassengerView === 'live_eta' && (
-          <div className="space-y-6">
-            {/* 1. Passenger Search Box */}
-            <PassengerSearchBox
-              language={language}
-              onSearch={handleSearch}
-              trains={trains}
-              currentTrainId={selectedTrainId}
-            />
+      {isMobilePreview ? (
+        <div className="max-w-[460px] mx-auto bg-slate-950 p-3 rounded-[40px] shadow-2xl border-4 border-slate-800">
+          {/* Top Notch Pill */}
+          <div className="w-24 h-4 bg-slate-900 rounded-full mx-auto mb-3 flex items-center justify-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-slate-950 border border-slate-800"></div>
+          </div>
+          
+          <div className="bg-slate-50 rounded-[32px] p-4 max-h-[820px] overflow-y-auto space-y-5">
+            {/* VIEW 1: LIVE ETA STATUS */}
+            {activePassengerView === 'live_eta' && (
+              <div className="space-y-4">
+                <PassengerSearchBox
+                  language={language}
+                  onSearch={handleSearch}
+                  trains={trains}
+                  currentTrainId={selectedTrainId}
+                />
+                {currentTrain && (
+                  <PassengerEtaCard
+                    train={currentTrain}
+                    selectedStationCode={selectedStationCode}
+                    language={language}
+                  />
+                )}
+                <PassengerTimeline points={trajectory?.points} />
+                <PassengerEtaStability />
+                <ConnectionRiskAnalyzer />
+                <SmsIvrSection language={language} />
+              </div>
+            )}
 
-            {/* 2. Hero ETA Result Card */}
-            {currentTrain && (
-              <PassengerEtaCard
-                train={currentTrain}
-                selectedStationCode={selectedStationCode}
-                language={language}
+            {/* VIEW 2: TRIP PLANNER */}
+            {activePassengerView === 'planner' && (
+              <PassengerRequirementPlanner
+                onSelectTrain={(tId) => {
+                  onSelectTrain(tId);
+                  setActivePassengerView('live_eta');
+                }}
               />
             )}
 
-            {/* 3. Passenger Simplified Timeline */}
-            <PassengerTimeline points={trajectory?.points} />
-
-            {/* 4. ETA Stability History & Reassurance */}
-            <PassengerEtaStability />
-
-            {/* 5. Connection Transfer Risk Analyzer */}
-            <ConnectionRiskAnalyzer />
-
-            {/* 6. Universal SMS & IVR Keypad Phone Section */}
-            <SmsIvrSection language={language} />
+            {/* VIEW 3: PNR & BUTTON PHONE SMS GATEWAY */}
+            {activePassengerView === 'pnr_sms' && (
+              <PNRLookupDeck
+                onSelectTrain={(tId) => {
+                  onSelectTrain(tId);
+                  setActivePassengerView('live_eta');
+                }}
+              />
+            )}
           </div>
-        )}
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* VIEW 1: LIVE ETA STATUS */}
+          {activePassengerView === 'live_eta' && (
+            <div className="space-y-6">
+              <PassengerSearchBox
+                language={language}
+                onSearch={handleSearch}
+                trains={trains}
+                currentTrainId={selectedTrainId}
+              />
+              {currentTrain && (
+                <PassengerEtaCard
+                  train={currentTrain}
+                  selectedStationCode={selectedStationCode}
+                  language={language}
+                />
+              )}
+              <PassengerTimeline points={trajectory?.points} />
+              <PassengerEtaStability />
+              <ConnectionRiskAnalyzer />
+              <SmsIvrSection language={language} />
+            </div>
+          )}
 
-        {/* VIEW 2: TRIP PLANNER & MULTI-FACTOR TRAIN RECOMMENDER */}
-        {activePassengerView === 'planner' && (
-          <PassengerRequirementPlanner
-            onSelectTrain={(tId) => {
-              onSelectTrain(tId);
-              setActivePassengerView('live_eta');
-            }}
-          />
-        )}
+          {/* VIEW 2: TRIP PLANNER */}
+          {activePassengerView === 'planner' && (
+            <PassengerRequirementPlanner
+              onSelectTrain={(tId) => {
+                onSelectTrain(tId);
+                setActivePassengerView('live_eta');
+              }}
+            />
+          )}
 
-        {/* VIEW 3: PNR & BUTTON PHONE SMS GATEWAY */}
-        {activePassengerView === 'pnr_sms' && (
-          <PNRLookupDeck
-            onSelectTrain={(tId) => {
-              onSelectTrain(tId);
-              setActivePassengerView('live_eta');
-            }}
-          />
-        )}
-
-      </div>
+          {/* VIEW 3: PNR & BUTTON PHONE SMS GATEWAY */}
+          {activePassengerView === 'pnr_sms' && (
+            <PNRLookupDeck
+              onSelectTrain={(tId) => {
+                onSelectTrain(tId);
+                setActivePassengerView('live_eta');
+              }}
+            />
+          )}
+        </div>
+      )}
 
     </div>
   );
