@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: trackpulse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: trackpulse
+      POSTGRES_USER: trackpulse_user
+      POSTGRES_PASSWORD: trackpulse_secure_password_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trackpulse_user -d trackpulse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trackpulse-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://trackpulse_user:trackpulse_secure_password_demo@database:5432/trackpulse
+      - SMS_PROVIDER=mock
+      - SMS_MAX_REQUESTS_PER_MINUTE=10
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./backend/app/data:/app/app/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trackpulse-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

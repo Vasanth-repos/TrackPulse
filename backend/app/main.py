@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.api.trains import router as trains_router
+from app.api.eta import router as eta_router
 from app.api.replay import router as replay_router
 from app.api.metrics import router as metrics_router
 from app.api.audit import router as audit_router
@@ -15,6 +16,7 @@ from app.api.recommend import router as recommend_router
 from app.api.simulate import router as simulate_router
 from app.api.pnr import router as pnr_router
 from app.api.sms import router as sms_router
+from app.db.database import init_db
 
 app = FastAPI(
     title="🚆 TrackPulse — Dynamic ETA & Multi-Train Delay Intelligence API",
@@ -28,6 +30,11 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
+# Initialize database schema tables on application startup
+@app.on_event("startup")
+def on_startup():
+    init_db()
+
 # Configure CORS for local development and demo presentation
 app.add_middleware(
     CORSMiddleware,
@@ -38,6 +45,7 @@ app.add_middleware(
 )
 
 # Mount API Routers
+app.include_router(eta_router, prefix="/api")
 app.include_router(trains_router, prefix="/api")
 app.include_router(replay_router, prefix="/api")
 app.include_router(metrics_router, prefix="/api")

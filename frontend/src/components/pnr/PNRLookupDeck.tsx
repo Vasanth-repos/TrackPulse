@@ -281,11 +281,16 @@ export const PNRLookupDeck: React.FC<PNRLookupDeckProps> = ({ onSelectTrain }) =
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left 6 cols: SMS Form & Presets */}
           <div className="lg:col-span-6 bg-white rounded-lg border border-slate-200 shadow-sm p-5 space-y-4">
-            <h3 className="text-sm font-bold text-gov-950">
-              Universal Carrier SMS Inbound Gateway (139 / 567678)
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-gov-950">
+                TrackPulse SMS Simulator
+              </h3>
+              <span className="px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded text-[10px] font-bold tracking-wide uppercase">
+                DEMO — SMS GATEWAY SIMULATION
+              </span>
+            </div>
             <p className="text-xs text-slate-500">
-              Simulate an incoming SMS message from any 2G button phone without active internet access.
+              Simulate an incoming SMS message from any 2G/keypad button phone without active internet access.
             </p>
 
             <form onSubmit={handleSendSMS} className="space-y-3">

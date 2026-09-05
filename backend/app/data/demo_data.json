@@ -1,0 +1,246 @@
+{
+  "metadata": {
+    "system": "TrackPulse SMS Railway ETA Reliability Subsystem",
+    "disclaimer": "DEMO / HISTORICAL REPLAY DATA. Never imply simulated data is live Indian Railways data.",
+    "version": "1.0.0"
+  },
+  "trains": [
+    {
+      "train_number": "12627",
+      "train_name": "Karnataka Express",
+      "train_type": "Superfast Express",
+      "origin_code": "MAS",
+      "origin_name": "Chennai Central",
+      "destination_code": "NDLS",
+      "destination_name": "New Delhi",
+      "total_distance_km": 2184.0,
+      "current_station_code": "NLR",
+      "current_station_name": "Nellore",
+      "next_station_code": "OGL",
+      "next_station_name": "Ongole",
+      "current_delay_minutes": 18,
+      "last_updated": "14:38:20",
+      "regime": "DELAYED",
+      "stations": [
+        {
+          "station_code": "MAS",
+          "station_name": "Chennai Central",
+          "sequence": 1,
+          "scheduled_arrival": "06:00",
+          "scheduled_departure": "06:00",
+          "distance_km": 0.0,
+          "p10": "06:00",
+          "p50_eta": "06:00",
+          "p90": "06:00",
+          "reliability": "HIGH"
+        },
+        {
+          "station_code": "NLR",
+          "station_name": "Nellore",
+          "sequence": 2,
+          "scheduled_arrival": "08:38",
+          "scheduled_departure": "08:40",
+          "distance_km": 177.0,
+          "p10": "08:50",
+          "p50_eta": "08:56",
+          "p90": "09:02",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "OGL",
+          "station_name": "Ongole",
+          "sequence": 3,
+          "scheduled_arrival": "10:08",
+          "scheduled_departure": "10:10",
+          "distance_km": 294.0,
+          "p10": "10:20",
+          "p50_eta": "10:28",
+          "p90": "10:35",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "BZA",
+          "station_name": "Vijayawada",
+          "sequence": 4,
+          "scheduled_arrival": "14:24",
+          "scheduled_departure": "14:35",
+          "distance_km": 433.0,
+          "p10": "14:35",
+          "p50_eta": "14:42",
+          "p90": "14:52",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "WL",
+          "station_name": "Warangal",
+          "sequence": 5,
+          "scheduled_arrival": "17:15",
+          "scheduled_departure": "17:17",
+          "distance_km": 640.0,
+          "p10": "17:28",
+          "p50_eta": "17:35",
+          "p90": "17:48",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "NGP",
+          "station_name": "Nagpur",
+          "sequence": 6,
+          "scheduled_arrival": "23:05",
+          "scheduled_departure": "23:10",
+          "distance_km": 1092.0,
+          "p10": "23:18",
+          "p50_eta": "23:25",
+          "p90": "23:42",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "NDLS",
+          "station_name": "New Delhi",
+          "sequence": 7,
+          "scheduled_arrival": "10:30",
+          "scheduled_departure": "10:30",
+          "distance_km": 2184.0,
+          "p10": "10:40",
+          "p50_eta": "10:50",
+          "p90": "11:15",
+          "reliability": "MEDIUM"
+        }
+      ]
+    },
+    {
+      "train_number": "12621",
+      "train_name": "Tamil Nadu Express",
+      "train_type": "Superfast Express",
+      "origin_code": "MAS",
+      "origin_name": "MGR Chennai Central",
+      "destination_code": "NDLS",
+      "destination_name": "New Delhi",
+      "total_distance_km": 2184.0,
+      "current_station_code": "BZA",
+      "current_station_name": "Vijayawada",
+      "next_station_code": "WL",
+      "next_station_name": "Warangal",
+      "current_delay_minutes": 25,
+      "last_updated": "14:38:20",
+      "regime": "DELAYED",
+      "stations": [
+        {
+          "station_code": "MAS",
+          "station_name": "Chennai Central",
+          "sequence": 1,
+          "scheduled_arrival": "22:00",
+          "scheduled_departure": "22:00",
+          "distance_km": 0.0,
+          "p10": "22:00",
+          "p50_eta": "22:00",
+          "p90": "22:00",
+          "reliability": "HIGH"
+        },
+        {
+          "station_code": "BZA",
+          "station_name": "Vijayawada",
+          "sequence": 2,
+          "scheduled_arrival": "04:15",
+          "scheduled_departure": "04:25",
+          "distance_km": 433.0,
+          "p10": "04:35",
+          "p50_eta": "04:40",
+          "p90": "04:50",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "WL",
+          "station_name": "Warangal",
+          "sequence": 3,
+          "scheduled_arrival": "07:08",
+          "scheduled_departure": "07:10",
+          "distance_km": 640.0,
+          "p10": "07:30",
+          "p50_eta": "07:35",
+          "p90": "07:45",
+          "reliability": "MEDIUM"
+        },
+        {
+          "station_code": "NDLS",
+          "station_name": "New Delhi",
+          "sequence": 4,
+          "scheduled_arrival": "06:30",
+          "scheduled_departure": "06:30",
+          "distance_km": 2184.0,
+          "p10": "06:50",
+          "p50_eta": "07:00",
+          "p90": "07:15",
+          "reliability": "MEDIUM"
+        }
+      ]
+    },
+    {
+      "train_number": "12007",
+      "train_name": "Chennai - Mysuru Shatabdi Express",
+      "train_type": "Shatabdi Express",
+      "origin_code": "MAS",
+      "origin_name": "MGR Chennai Central",
+      "destination_code": "MYS",
+      "destination_name": "Mysuru Junction",
+      "total_distance_km": 497.0,
+      "current_station_code": "KPD",
+      "current_station_name": "Katpadi",
+      "next_station_code": "JTJ",
+      "next_station_name": "Jolarpettai",
+      "current_delay_minutes": 5,
+      "last_updated": "14:38:20",
+      "regime": "NORMAL",
+      "stations": [
+        {
+          "station_code": "MAS",
+          "station_name": "Chennai Central",
+          "sequence": 1,
+          "scheduled_arrival": "06:00",
+          "scheduled_departure": "06:00",
+          "distance_km": 0.0,
+          "p10": "06:00",
+          "p50_eta": "06:00",
+          "p90": "06:00",
+          "reliability": "HIGH"
+        },
+        {
+          "station_code": "KPD",
+          "station_name": "Katpadi",
+          "sequence": 2,
+          "scheduled_arrival": "07:38",
+          "scheduled_departure": "07:40",
+          "distance_km": 130.0,
+          "p10": "07:40",
+          "p50_eta": "07:43",
+          "p90": "07:48",
+          "reliability": "HIGH"
+        },
+        {
+          "station_code": "SBC",
+          "station_name": "KSR Bengaluru",
+          "sequence": 3,
+          "scheduled_arrival": "10:55",
+          "scheduled_departure": "11:00",
+          "distance_km": 360.0,
+          "p10": "10:58",
+          "p50_eta": "11:02",
+          "p90": "11:10",
+          "reliability": "HIGH"
+        },
+        {
+          "station_code": "MYS",
+          "station_name": "Mysuru",
+          "sequence": 4,
+          "scheduled_arrival": "13:00",
+          "scheduled_departure": "13:00",
+          "distance_km": 497.0,
+          "p10": "13:02",
+          "p50_eta": "13:05",
+          "p90": "13:12",
+          "reliability": "HIGH"
+        }
+      ]
+    }
+  ]
+}
