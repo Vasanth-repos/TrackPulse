@@ -162,6 +162,7 @@ export const PassengerDashboard: React.FC<PassengerDashboardProps> = ({
             {/* VIEW 3: PNR & BUTTON PHONE SMS GATEWAY */}
             {activePassengerView === 'pnr_sms' && (
               <PNRLookupDeck
+                isMobile={true}
                 onSelectTrain={(tId) => {
                   onSelectTrain(tId);
                   setActivePassengerView('live_eta');
