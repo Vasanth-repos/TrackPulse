@@ -3,74 +3,117 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --text-scale: 1;
+  }
+  
   body {
-    background-color: #070A10;
-    color: #F0F4F8;
-    font-family: 'Inter', sans-serif;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-/* Custom Railway UI Elements */
-.rail-track-line {
-  background: repeating-linear-gradient(
-    90deg,
-    #263452 0px,
-    #263452 8px,
-    transparent 8px,
-    transparent 14px
-  );
+/* High-Contrast Segmented Switcher Controls */
+.gov-switcher-active {
+  background-color: #0B2545 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.15) !important;
 }
 
-.rail-glass-card {
-  background: rgba(16, 22, 36, 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(38, 52, 82, 0.6);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+.gov-switcher-inactive {
+  background-color: transparent !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
 }
 
-.rail-glass-panel {
-  background: rgba(22, 31, 51, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(58, 77, 115, 0.5);
+.gov-switcher-inactive:hover {
+  background-color: #E2E8F0 !important;
+  color: #0F172A !important;
 }
 
-.glow-signal-green {
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+/* Accessible Font Scaling */
+.text-scale-normal {
+  font-size: 100%;
+}
+.text-scale-large {
+  font-size: 112.5%;
+}
+.text-scale-xlarge {
+  font-size: 125%;
 }
 
-.glow-signal-amber {
-  box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+/* High-Contrast Mode */
+.high-contrast {
+  --hc-border: #000000;
+  --hc-text: #000000;
+  --hc-bg: #FFFFFF;
 }
 
-.glow-signal-red {
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+.high-contrast .border-slate-200,
+.high-contrast .border-slate-300 {
+  border-color: #000000 !important;
+  border-width: 2px !important;
 }
 
-.glow-signal-cyan {
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+.high-contrast .text-slate-600,
+.high-contrast .text-slate-500 {
+  color: #111827 !important;
+  font-weight: 600;
 }
 
-/* Custom Scrollbars */
+/* Tabular Numerals for Clocks & Timetables */
+.num-tabular {
+  font-variant-numeric: tabular-nums;
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+}
+
+/* Clean Government Card Styling */
+.gov-card {
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.gov-card-inset {
+  background-color: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 6px;
+}
+
+/* Station Electronic Display Board Card */
+.station-board-card {
+  background-color: #0B1B33;
+  border: 1px solid #1E293B;
+  border-radius: 6px;
+}
+
+/* Clean subtle scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #263452;
+  background: #94A3B8;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3A4D73;
+  background: #64748B;
 }
 
-/* Monospace numerals */
-.num-tabular {
-  font-family: 'JetBrains Mono', monospace;
-  font-variant-numeric: tabular-nums;
+/* Print Stylesheet for Official Reports */
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }

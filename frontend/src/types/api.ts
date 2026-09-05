@@ -237,3 +237,200 @@ export interface DatasetAuditReport {
   data_quality_grade: string;
   status: string;
 }
+
+// -------------------------------------------------------------
+// Multi-Train & Delay Propagation Types
+// -------------------------------------------------------------
+
+export interface IncomingTrainInfo {
+  train_id: string;
+  train_name: string;
+  origin_station_code: string;
+  predicted_arrival: string;
+  scheduled_arrival: string;
+  current_delay_min: number;
+  predicted_delay_min: number;
+  eta_lower_bound: string;
+  eta_upper_bound: string;
+  reliability_score: number;
+  regime: string;
+  platform_assigned: string;
+}
+
+export interface OutgoingTrainInfo {
+  train_id: string;
+  train_name: string;
+  destination_station_code: string;
+  scheduled_departure: string;
+  predicted_departure: string;
+  required_turnaround_min: number;
+  available_turnaround_min: number;
+  incoming_dependency_train_id?: string | null;
+  dependency_type: 'RAKE' | 'CREW' | 'PLATFORM' | 'SCHEDULE' | string;
+  departure_risk: 'LOW' | 'MEDIUM' | 'HIGH' | string;
+  propagated_delay_min: number;
+  platform_assigned: string;
+}
+
+export interface PlatformConflict {
+  platform_number: string;
+  conflicting_trains: string[];
+  overlap_window: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH' | string;
+  recommended_action: string;
+}
+
+export interface PropagationChainNode {
+  train_id: string;
+  train_name: string;
+  station_code: string;
+  event_type: 'ARRIVAL' | 'TURNAROUND' | 'DEPARTURE' | string;
+  delay_minutes: number;
+  risk_level: string;
+  reason: string;
+}
+
+export interface NetworkAnalyzeRequest {
+  station_id: string;
+  time_window_minutes?: number;
+}
+
+export interface NetworkAnalyzeResponse {
+  station_id: string;
+  station_name: string;
+  analyzed_timestamp: string;
+  incoming_trains: IncomingTrainInfo[];
+  outgoing_trains: OutgoingTrainInfo[];
+  platform_conflicts: PlatformConflict[];
+  propagation_chains: PropagationChainNode[][];
+  total_active_dependencies: number;
+  overall_station_congestion: 'NORMAL' | 'CONGESTED' | 'CRITICAL' | string;
+}
+
+// -------------------------------------------------------------
+// Passenger Recommendation Types
+// -------------------------------------------------------------
+
+export interface UserRequirementRequest {
+  source: string;
+  destination: string;
+  journey_date?: string;
+  departure_window_start?: string;
+  departure_window_end?: string;
+  max_acceptable_delay_min?: number;
+  connection_required?: boolean;
+  connecting_departure_time?: string | null;
+  user_priority?: 'BALANCED' | 'PUNCTUALITY' | 'FASTEST' | 'RELIABILITY' | string;
+}
+
+export interface CandidateTrainScore {
+  train_id: string;
+  train_name: string;
+  train_type: string;
+  origin_station_code: string;
+  destination_station_code: string;
+  scheduled_departure: string;
+  scheduled_arrival: string;
+  predicted_arrival: string;
+  eta_p10: string;
+  eta_p50: string;
+  eta_p90: string;
+  interval_width_min: number;
+  current_delay_min: number;
+  predicted_delay_min: number;
+  reliability_score: number;
+  delay_risk: 'LOW' | 'MEDIUM' | 'HIGH' | string;
+  connection_risk: 'SAFE' | 'AT_RISK' | 'LIKELY_MISSED' | 'N/A' | string;
+  overall_recommendation_score: number;
+  is_recommended: boolean;
+  reasons: string[];
+}
+
+export interface UserRequirementResponse {
+  source: string;
+  destination: string;
+  journey_date: string;
+  total_candidates_found: number;
+  recommended_train: CandidateTrainScore | null;
+  alternative_trains: CandidateTrainScore[];
+  scoring_weights_used: Record<string, number>;
+}
+
+// -------------------------------------------------------------
+// What-If Disruption Simulator Types
+// -------------------------------------------------------------
+
+export interface WhatIfSimulateRequest {
+  train_id: string;
+  delay_injection_minutes: number;
+  injection_station_code: string;
+  delay_cause_category: 'SECTION_HALT' | 'WEATHER_FOG' | 'SIGNAL_FAILURE' | 'FREIGHT_CROSSING' | string;
+}
+
+export interface SimulatedTrainImpact {
+  train_id: string;
+  train_name: string;
+  dependency_relation: 'DIRECT_TARGET' | 'OUTGOING_RAKE_DEPENDENT' | 'DOWNSTREAM_CONNECTING' | string;
+  baseline_delay_min: number;
+  simulated_delay_min: number;
+  delay_delta_min: number;
+  baseline_eta: string;
+  simulated_eta: string;
+  baseline_reliability: number;
+  simulated_reliability: number;
+  simulated_risk: 'LOW' | 'MEDIUM' | 'HIGH' | string;
+  cascade_reason: string;
+}
+
+export interface WhatIfSimulateResponse {
+  primary_train_id: string;
+  injected_delay_minutes: number;
+  injection_station_code: string;
+  simulation_timestamp: string;
+  affected_trains: SimulatedTrainImpact[];
+  passenger_connection_impact: string;
+  platform_bottleneck_warning?: string | null;
+  network_stability_index: number;
+}
+
+// -------------------------------------------------------------
+// PNR & Button Phone SMS Types
+// -------------------------------------------------------------
+
+export interface PNRStatusRequest {
+  pnr: string;
+}
+
+export interface PNRStatusResponse {
+  pnr_masked: string;
+  train_id: string;
+  train_name: string;
+  train_type: string;
+  origin_station_code: string;
+  destination_station_code: string;
+  passenger_boarding_station: string;
+  passenger_destination_station: string;
+  journey_date: string;
+  booking_status: string;
+  coach_berth: string;
+  current_delay_min: number;
+  predicted_arrival: string;
+  eta_range: string;
+  reliability_percentage: number;
+  connection_risk: string;
+  status_summary: string;
+  is_mock_provider: boolean;
+}
+
+export interface SMSInboundRequest {
+  sender: string;
+  message: string;
+}
+
+export interface SMSInboundResponse {
+  sender_masked: string;
+  command_detected: 'ETA_INQUIRY' | 'PNR_INQUIRY' | 'HELP' | 'INVALID' | string;
+  response_text: string;
+  character_count: number;
+  is_sms_friendly: boolean;
+}

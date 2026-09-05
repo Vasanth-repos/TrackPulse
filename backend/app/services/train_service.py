@@ -55,7 +55,10 @@ class TrainService:
         train_list = []
         # Preset realistic live snapshots for the active trains
         live_snapshots = {
-            "12627": {"current_stn_idx": 12, "delay": 24, "trend_1": 4, "trend_3": 8, "freshness": 8},
+            "12627": {"current_stn_idx": 12, "delay": 18, "trend_1": 4, "trend_3": 8, "freshness": 8},
+            "12628": {"current_stn_idx": 9, "delay": 4, "trend_1": 0, "trend_3": 1, "freshness": 12},
+            "12840": {"current_stn_idx": 2, "delay": 28, "trend_1": 5, "trend_3": 11, "freshness": 15},
+            "12640": {"current_stn_idx": 2, "delay": 1, "trend_1": 0, "trend_3": 0, "freshness": 4},
             "12951": {"current_stn_idx": 4, "delay": 4, "trend_1": 0, "trend_3": 1, "freshness": 5},
             "12301": {"current_stn_idx": 4, "delay": 18, "trend_1": 2, "trend_3": 6, "freshness": 14},
             "12007": {"current_stn_idx": 2, "delay": 0, "trend_1": -2, "trend_3": 0, "freshness": 4},

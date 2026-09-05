@@ -26,6 +26,7 @@ def get_all_trains():
     return train_service.get_all_trains_live()
 
 @router.get("/train/{train_id}", response_model=TrainInfo)
+@router.get("/trains/{train_id}", response_model=TrainInfo)
 def get_train_details(train_id: str):
     """Returns static metadata, origin/destination, and route summary for a train."""
     train = get_train_by_id(train_id)
@@ -47,6 +48,7 @@ def get_train_details(train_id: str):
     )
 
 @router.get("/train/{train_id}/eta", response_model=TrainLiveStatus)
+@router.get("/trains/{train_id}/eta", response_model=TrainLiveStatus)
 def get_train_live_eta(train_id: str):
     """Returns current live point ETA, prediction interval [lower, upper], and reliability score."""
     all_trains = train_service.get_all_trains_live()

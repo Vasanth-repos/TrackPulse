@@ -1,0 +1,23 @@
+{
+  "SBC_DMM": { "from_station": "SBC", "to_station": "DMM", "distance_km": 181.0, "mean_traversal_min": 210, "historical_std_min": 14.5, "slack_recovery_min": 15, "congestion_index": 0.35, "speed_limit_kmh": 110 },
+  "DMM_GTL": { "from_station": "DMM", "to_station": "GTL", "distance_km": 101.0, "mean_traversal_min": 120, "historical_std_min": 11.2, "slack_recovery_min": 10, "congestion_index": 0.40, "speed_limit_kmh": 110 },
+  "GTL_WADI": { "from_station": "GTL", "to_station": "WADI", "distance_km": 229.0, "mean_traversal_min": 230, "historical_std_min": 16.8, "slack_recovery_min": 20, "congestion_index": 0.48, "speed_limit_kmh": 120 },
+  "WADI_SUR": { "from_station": "WADI", "to_station": "SUR", "distance_km": 150.0, "mean_traversal_min": 145, "historical_std_min": 12.0, "slack_recovery_min": 12, "congestion_index": 0.38, "speed_limit_kmh": 110 },
+  "SUR_DD": { "from_station": "SUR", "to_station": "DD", "distance_km": 187.0, "mean_traversal_min": 175, "historical_std_min": 18.2, "slack_recovery_min": 15, "congestion_index": 0.55, "speed_limit_kmh": 110 },
+  "DD_MMR": { "from_station": "DD", "to_station": "MMR", "distance_km": 238.0, "mean_traversal_min": 260, "historical_std_min": 22.4, "slack_recovery_min": 25, "congestion_index": 0.62, "speed_limit_kmh": 100 },
+  "MMR_BSL": { "from_station": "MMR", "to_station": "BSL", "distance_km": 184.0, "mean_traversal_min": 155, "historical_std_min": 15.0, "slack_recovery_min": 18, "congestion_index": 0.50, "speed_limit_kmh": 120 },
+  "BSL_ET": { "from_station": "BSL", "to_station": "ET", "distance_km": 307.0, "mean_traversal_min": 280, "historical_std_min": 20.5, "slack_recovery_min": 25, "congestion_index": 0.58, "speed_limit_kmh": 130 },
+  "ET_BPL": { "from_station": "ET", "to_station": "BPL", "distance_km": 92.0, "mean_traversal_min": 95, "historical_std_min": 13.5, "slack_recovery_min": 12, "congestion_index": 0.65, "speed_limit_kmh": 110 },
+  "BPL_VGLJ": { "from_station": "BPL", "to_station": "VGLJ", "distance_km": 292.0, "mean_traversal_min": 240, "historical_std_min": 17.8, "slack_recovery_min": 20, "congestion_index": 0.45, "speed_limit_kmh": 130 },
+  "VGLJ_AGC": { "from_station": "VGLJ", "to_station": "AGC", "distance_km": 215.0, "mean_traversal_min": 170, "historical_std_min": 14.0, "slack_recovery_min": 18, "congestion_index": 0.52, "speed_limit_kmh": 130 },
+  "AGC_NDLS": { "from_station": "AGC", "to_station": "NDLS", "distance_km": 228.0, "mean_traversal_min": 210, "historical_std_min": 19.5, "slack_recovery_min": 25, "congestion_index": 0.72, "speed_limit_kmh": 130 },
+  "MAS_AJJ": { "from_station": "MAS", "to_station": "AJJ", "distance_km": 69.0, "mean_traversal_min": 53, "historical_std_min": 6.5, "slack_recovery_min": 8, "congestion_index": 0.60, "speed_limit_kmh": 110 },
+  "AJJ_KPD": { "from_station": "AJJ", "to_station": "KPD", "distance_km": 61.0, "mean_traversal_min": 45, "historical_std_min": 5.2, "slack_recovery_min": 6, "congestion_index": 0.42, "speed_limit_kmh": 120 },
+  "KPD_JTJ": { "from_station": "KPD", "to_station": "JTJ", "distance_km": 84.0, "mean_traversal_min": 68, "historical_std_min": 7.0, "slack_recovery_min": 10, "congestion_index": 0.38, "speed_limit_kmh": 120 },
+  "JTJ_SBC": { "from_station": "JTJ", "to_station": "SBC", "distance_km": 146.0, "mean_traversal_min": 130, "historical_std_min": 11.0, "slack_recovery_min": 14, "congestion_index": 0.50, "speed_limit_kmh": 110 },
+  "MAS_BZA": { "from_station": "MAS", "to_station": "BZA", "distance_km": 433.0, "mean_traversal_min": 375, "historical_std_min": 22.0, "slack_recovery_min": 30, "congestion_index": 0.55, "speed_limit_kmh": 130 },
+  "BZA_WL": { "from_station": "BZA", "to_station": "WL", "distance_km": 207.0, "mean_traversal_min": 163, "historical_std_min": 12.5, "slack_recovery_min": 15, "congestion_index": 0.45, "speed_limit_kmh": 130 },
+  "WL_BPQ": { "from_station": "WL", "to_station": "BPQ", "distance_km": 243.0, "mean_traversal_min": 215, "historical_std_min": 16.0, "slack_recovery_min": 20, "congestion_index": 0.48, "speed_limit_kmh": 120 },
+  "BPQ_NGP": { "from_station": "BPQ", "to_station": "NGP", "distance_km": 209.0, "mean_traversal_min": 185, "historical_std_min": 14.2, "slack_recovery_min": 18, "congestion_index": 0.52, "speed_limit_kmh": 120 },
+  "NGP_ET": { "from_station": "NGP", "to_station": "ET", "distance_km": 298.0, "mean_traversal_min": 275, "historical_std_min": 24.0, "slack_recovery_min": 25, "congestion_index": 0.68, "speed_limit_kmh": 110 }
+}

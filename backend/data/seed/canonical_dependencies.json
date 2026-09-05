@@ -1,0 +1,57 @@
+[
+  {
+    "dependency_id": "DEP_NDLS_12627_12628",
+    "station_code": "NDLS",
+    "incoming_train_id": "12627",
+    "outgoing_train_id": "12628",
+    "coupling_type": "RAKE",
+    "required_turnaround_min": 180,
+    "platform_number": "3",
+    "crew_relocation_required": true,
+    "description": "Karnataka Express primary rake turnaround at NDLS with pitline secondary maintenance."
+  },
+  {
+    "dependency_id": "DEP_NDLS_12621_12622",
+    "station_code": "NDLS",
+    "incoming_train_id": "12621",
+    "outgoing_train_id": "12622",
+    "coupling_type": "RAKE",
+    "required_turnaround_min": 240,
+    "platform_number": "4",
+    "crew_relocation_required": true,
+    "description": "Tamil Nadu Express rake link at NDLS."
+  },
+  {
+    "dependency_id": "DEP_MYS_12007_12008",
+    "station_code": "MYS",
+    "incoming_train_id": "12007",
+    "outgoing_train_id": "12008",
+    "coupling_type": "RAKE",
+    "required_turnaround_min": 75,
+    "platform_number": "1",
+    "crew_relocation_required": false,
+    "description": "Shatabdi Express fast turnaround at Mysuru Junction."
+  },
+  {
+    "dependency_id": "DEP_MAS_12622_12675",
+    "station_code": "MAS",
+    "incoming_train_id": "12622",
+    "outgoing_train_id": "12675",
+    "coupling_type": "PASSENGER_CONNECTION",
+    "required_turnaround_min": 45,
+    "platform_number": "5",
+    "crew_relocation_required": false,
+    "description": "High-volume connecting passenger flow from Northern arrivals transferring to Kovai Express."
+  },
+  {
+    "dependency_id": "DEP_BZA_12627_12711",
+    "station_code": "BZA",
+    "incoming_train_id": "12627",
+    "outgoing_train_id": "12711",
+    "coupling_type": "PLATFORM",
+    "required_turnaround_min": 20,
+    "platform_number": "1",
+    "crew_relocation_required": false,
+    "description": "Platform 1 sequential headway allocation at Vijayawada Junction."
+  }
+]

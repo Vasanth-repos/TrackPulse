@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { TopBar } from './components/layout/TopBar';
-import { HeaderNav, NavTab } from './components/layout/HeaderNav';
-import { NetworkSituation } from './components/dashboard/NetworkSituation';
-import { TrainTable } from './components/dashboard/TrainTable';
-import { EtaHero } from './components/train/EtaHero';
-import { JourneyTimeline } from './components/train/JourneyTimeline';
-import { DelayTrajectoryChart } from './components/train/DelayTrajectoryChart';
-import { ReliabilityGauge } from './components/train/ReliabilityGauge';
-import { EvidencePanel } from './components/train/EvidencePanel';
-import { StationEtaTable } from './components/train/StationEtaTable';
-import { ReplayStudio } from './components/replay/ReplayStudio';
-import { ModelBenchmarkLab } from './components/evaluation/ModelBenchmarkLab';
-import { DatasetAuditor } from './components/audit/DatasetAuditor';
+import { GlobalHeader, DashboardMode } from './components/layout/GlobalHeader';
+import { GlobalStatusBar } from './components/layout/GlobalStatusBar';
+import { GlobalFooter } from './components/layout/GlobalFooter';
+
+import { ControlRoomDashboard } from './components/controlroom/ControlRoomDashboard';
+import { PassengerDashboard } from './components/passenger/PassengerDashboard';
+import { StationBoardDashboard } from './components/stationboard/StationBoardDashboard';
+
+import { GlobalSearchModal } from './components/common/GlobalSearchModal';
+import { NotificationDrawer } from './components/common/NotificationDrawer';
+import { AccessibilityModal } from './components/common/AccessibilityModal';
+import { ComponentLibraryModal } from './components/common/ComponentLibraryModal';
+import { HelpSystemModal } from './components/common/HelpSystemModal';
+import { LoadingSkeleton } from './components/common/ErrorState';
 
 import {
   fetchNetworkSummary,
@@ -20,57 +21,83 @@ import {
   fetchTrainReliability,
   fetchTrainEvidence,
   fetchReplaySession,
-  fetchModelEvaluation,
-  fetchDatasetAudit
 } from './services/api';
 
 import {
-  NetworkSummary as INetworkSummary,
+  NetworkSummary,
   TrainLiveStatus,
   TrajectoryResponse,
   ReliabilityBreakdown,
   EvidenceResponse,
-  ReplaySession as IReplaySession,
-  EvaluationReport,
-  DatasetAuditReport
+  ReplaySession,
 } from './types/api';
 
-export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTab>('overview');
-  const [selectedTrainId, setSelectedTrainId] = useState<string>('12627');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+import { Language } from './utils/translations';
 
-  // Data states
-  const [summary, setSummary] = useState<INetworkSummary | null>(null);
+export const App: React.FC = () => {
+  // Global Platform State
+  const [currentMode, setCurrentMode] = useState<DashboardMode>('control_room');
+  const [selectedTrainId, setSelectedTrainId] = useState<string>('12627');
+  const [language, setLanguage] = useState<Language>('en');
+  const [textScale, setTextScale] = useState<'normal' | 'large' | 'xlarge'>('normal');
+  const [highContrast, setHighContrast] = useState<boolean>(false);
+
+  // Modals & Drawers
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
+  const [isComponentLibOpen, setIsComponentLibOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+  // Live Time
+  const [currentTime, setCurrentTime] = useState<string>('14:38:20');
+
+  // Backend API Data States
+  const [summary, setSummary] = useState<NetworkSummary | null>(null);
   const [trains, setTrains] = useState<TrainLiveStatus[]>([]);
   const [trajectory, setTrajectory] = useState<TrajectoryResponse | null>(null);
   const [reliability, setReliability] = useState<ReliabilityBreakdown | null>(null);
   const [evidence, setEvidence] = useState<EvidenceResponse | null>(null);
-  const [replaySession, setReplaySession] = useState<IReplaySession | null>(null);
-  const [evalReport, setEvalReport] = useState<EvaluationReport | null>(null);
-  const [auditReport, setAuditReport] = useState<DatasetAuditReport | null>(null);
-
+  const [replaySession, setReplaySession] = useState<ReplaySession | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Load initial application data
+  // Live ticking clock effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+      setCurrentTime(timeStr);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Keyboard shortcut for universal search (Ctrl+K or /)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Load initial global network data
   useEffect(() => {
     async function loadData() {
       try {
         setIsLoading(true);
-        const [sumRes, trainsRes, evalRes, auditRes, replayRes] = await Promise.all([
-          fetchNetworkSummary(),
-          fetchAllTrains(),
-          fetchModelEvaluation(),
-          fetchDatasetAudit(),
-          fetchReplaySession('12627')
+        const [sumRes, trainsRes, replayRes] = await Promise.all([
+          fetchNetworkSummary().catch(() => null),
+          fetchAllTrains().catch(() => []),
+          fetchReplaySession('12627').catch(() => null),
         ]);
-        setSummary(sumRes);
-        setTrains(trainsRes);
-        setEvalReport(evalRes);
-        setAuditReport(auditRes);
-        setReplaySession(replayRes);
+        if (sumRes) setSummary(sumRes);
+        if (trainsRes && trainsRes.length > 0) setTrains(trainsRes);
+        if (replayRes) setReplaySession(replayRes);
       } catch (err) {
-        console.error('Initial data fetch error:', err);
+        console.error('Failed to load initial data:', err);
       } finally {
         setIsLoading(false);
       }
@@ -78,20 +105,20 @@ export const App: React.FC = () => {
     loadData();
   }, []);
 
-  // Load train-specific data when selection changes
+  // Load train-specific data when selected train changes
   useEffect(() => {
     async function loadTrainData() {
       try {
         const [trajRes, relRes, evRes] = await Promise.all([
-          fetchTrainTrajectory(selectedTrainId),
-          fetchTrainReliability(selectedTrainId),
-          fetchTrainEvidence(selectedTrainId)
+          fetchTrainTrajectory(selectedTrainId).catch(() => null),
+          fetchTrainReliability(selectedTrainId).catch(() => null),
+          fetchTrainEvidence(selectedTrainId).catch(() => null),
         ]);
-        setTrajectory(trajRes);
-        setReliability(relRes);
-        setEvidence(evRes);
+        if (trajRes) setTrajectory(trajRes);
+        if (relRes) setReliability(relRes);
+        if (evRes) setEvidence(evRes);
       } catch (err) {
-        console.error(`Error loading data for train ${selectedTrainId}:`, err);
+        console.error(`Failed to load data for train ${selectedTrainId}:`, err);
       }
     }
     loadTrainData();
@@ -99,105 +126,129 @@ export const App: React.FC = () => {
 
   const handleSelectTrain = (trainId: string) => {
     setSelectedTrainId(trainId);
-    setActiveTab('train_detail');
   };
 
-  const handleLaunchReplay = (trainId: string) => {
-    setSelectedTrainId(trainId);
-    setActiveTab('replay');
-  };
-
-  const currentTrain = trains.find((t) => t.train_id === selectedTrainId) || trains[0];
+  // Font scale class
+  const scaleClass =
+    textScale === 'large'
+      ? 'text-scale-large'
+      : textScale === 'xlarge'
+      ? 'text-scale-xlarge'
+      : 'text-scale-normal';
 
   return (
-    <div className="min-h-screen bg-rail-950 text-slate-100 flex flex-col font-sans">
-      {/* Global Top Bar */}
-      <TopBar
-        systemFreshnessSec={summary?.system_freshness_sec || 6}
-        systemStatus={summary?.system_status || 'OPERATIONAL_ONLINE'}
+    <div
+      className={`min-h-screen flex flex-col font-sans transition-all ${scaleClass} ${
+        highContrast ? 'high-contrast bg-white text-black' : currentMode === 'station_board' ? 'bg-board-bg' : 'bg-slate-50 text-slate-900'
+      }`}
+    >
+      {/* Persistent Official Top Government Header */}
+      <GlobalHeader
+        currentMode={currentMode}
+        onModeChange={setCurrentMode}
+        language={language}
+        onLanguageChange={setLanguage}
+        onOpenAccessibility={() => setIsAccessibilityOpen(true)}
+        onOpenNotifications={() => setIsNotificationsOpen(true)}
+        onOpenHelp={() => setIsHelpOpen(true)}
+        onOpenComponentLibrary={() => setIsComponentLibOpen(true)}
+        currentTime={currentTime}
+        unreadAlertCount={2}
       />
 
-      {/* Global Tab Navigation */}
-      <HeaderNav
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedTrainId={selectedTrainId}
+      {/* Persistent Global Status Bar (Live Telemetry & Historical Replay Badge) */}
+      <GlobalStatusBar
+        language={language}
+        currentTime={currentTime}
+        systemFreshnessSec={summary?.system_freshness_sec || 18}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
-        {/* Tab 1: Network Overview */}
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            <NetworkSituation summary={summary} onSelectTrain={handleSelectTrain} />
-            <TrainTable
-              trains={trains}
-              selectedTrainId={selectedTrainId}
-              onSelectTrain={handleSelectTrain}
-              onLaunchReplay={handleLaunchReplay}
-              searchQuery={searchQuery}
-            />
-          </div>
-        )}
-
-        {/* Tab 2: Train Inspector */}
-        {activeTab === 'train_detail' && currentTrain && (
-          <div className="space-y-6">
-            {/* Hero ETA Display & Uncertainty Slider */}
-            <EtaHero train={currentTrain} />
-
-            {/* Signature Railway Journey Timeline */}
-            {trajectory && (
-              <JourneyTimeline
-                points={trajectory.points}
-                currentStationCode={trajectory.current_station_code}
+      {/* Main View Area */}
+      <main className="flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
+        {isLoading && trains.length === 0 ? (
+          <LoadingSkeleton />
+        ) : (
+          <>
+            {/* 1. CONTROL ROOM DASHBOARD */}
+            {currentMode === 'control_room' && (
+              <ControlRoomDashboard
+                summary={summary}
+                trains={trains}
+                selectedTrainId={selectedTrainId}
+                onSelectTrain={handleSelectTrain}
+                trajectory={trajectory}
+                reliability={reliability}
+                evidence={evidence}
+                replaySession={replaySession}
               />
             )}
 
-            {/* Two Column Layout: Trajectory Chart + Reliability & Evidence */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left Column: Trajectory Chart & Station Table */}
-              <div className="lg:col-span-7 space-y-6">
-                {trajectory && (
-                  <DelayTrajectoryChart
-                    points={trajectory.points}
-                    summaryTrend={trajectory.summary_trend}
-                  />
-                )}
-                {trajectory && <StationEtaTable points={trajectory.points} />}
-              </div>
+            {/* 2. PASSENGER DASHBOARD */}
+            {currentMode === 'passenger' && (
+              <PassengerDashboard
+                trains={trains}
+                selectedTrainId={selectedTrainId}
+                onSelectTrain={handleSelectTrain}
+                trajectory={trajectory}
+                language={language}
+              />
+            )}
 
-              {/* Right Column: Reliability Gauge & "WHY THIS ETA?" Evidence */}
-              <div className="lg:col-span-5 space-y-6">
-                <ReliabilityGauge breakdown={reliability} />
-                <EvidencePanel evidence={evidence} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 3: Live Replay Studio */}
-        {activeTab === 'replay' && (
-          <ReplayStudio initialSession={replaySession} />
-        )}
-
-        {/* Tab 4: Model Benchmark Lab */}
-        {activeTab === 'benchmark' && (
-          <ModelBenchmarkLab report={evalReport} />
-        )}
-
-        {/* Tab 5: Dataset Health Auditor */}
-        {activeTab === 'auditor' && (
-          <DatasetAuditor auditReport={auditReport} />
+            {/* 3. STATION BOARD DASHBOARD */}
+            {currentMode === 'station_board' && (
+              <StationBoardDashboard
+                currentTime={currentTime}
+                language={language}
+              />
+            )}
+          </>
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-rail-900 border-t border-rail-800 px-4 py-3 text-center text-xs text-rail-400 font-mono">
-        🚆 Adaptive ETA Reliability & Forecasting System for Indian Coaching Trains • SIH 2026 • Powered by Section-Aware Quantile ML
-      </footer>
+      {/* Persistent Official Government Footer */}
+      <GlobalFooter
+        language={language}
+        onOpenHelp={() => setIsHelpOpen(true)}
+        onOpenAccessibility={() => setIsAccessibilityOpen(true)}
+        onOpenComponentLibrary={() => setIsComponentLibOpen(true)}
+      />
+
+      {/* Modals & Dialogs */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        trains={trains}
+        onSelectTrain={handleSelectTrain}
+      />
+
+      <NotificationDrawer
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
+        onSelectTrain={handleSelectTrain}
+      />
+
+      <AccessibilityModal
+        isOpen={isAccessibilityOpen}
+        onClose={() => setIsAccessibilityOpen(false)}
+        language={language}
+        onLanguageChange={setLanguage}
+        textScale={textScale}
+        onTextScaleChange={setTextScale}
+        highContrast={highContrast}
+        onHighContrastToggle={() => setHighContrast(!highContrast)}
+      />
+
+      <ComponentLibraryModal
+        isOpen={isComponentLibOpen}
+        onClose={() => setIsComponentLibOpen(false)}
+      />
+
+      <HelpSystemModal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        language={language}
+        currentTime={currentTime}
+      />
     </div>
   );
 };

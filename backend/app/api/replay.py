@@ -10,6 +10,12 @@ from app.replay.engine import replay_engine
 
 router = APIRouter(prefix="/replay", tags=["Historical Replay Studio"])
 
+@router.get("", response_model=ReplaySession)
+@router.get("/", response_model=ReplaySession)
+def get_default_replay_session(session_id: str = "12627_signature_demo"):
+    """Returns the default active replay session state."""
+    return replay_engine.get_session(session_id)
+
 @router.get("/{train_id}/journeys", response_model=List[Dict[str, str]])
 def get_available_journeys(train_id: str):
     """Returns available replay scenarios for the train."""

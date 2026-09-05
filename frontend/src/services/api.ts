@@ -7,7 +7,14 @@ import {
   EvidenceResponse,
   ReplaySession,
   EvaluationReport,
-  DatasetAuditReport
+  DatasetAuditReport,
+  NetworkAnalyzeResponse,
+  UserRequirementRequest,
+  UserRequirementResponse,
+  WhatIfSimulateRequest,
+  WhatIfSimulateResponse,
+  PNRStatusResponse,
+  SMSInboundResponse
 } from '../types/api';
 
 const API_BASE = '/api';
@@ -87,5 +94,59 @@ export async function fetchModelEvaluation(): Promise<EvaluationReport> {
 export async function fetchDatasetAudit(): Promise<DatasetAuditReport> {
   const res = await fetch(`${API_BASE}/data-quality`);
   if (!res.ok) throw new Error('Failed to fetch dataset audit report');
+  return res.json();
+}
+
+// -------------------------------------------------------------
+// Spec Feature API Functions
+// -------------------------------------------------------------
+
+export async function fetchNetworkAnalysis(stationId: string = 'MAS', timeWindowMin: number = 180): Promise<NetworkAnalyzeResponse> {
+  const res = await fetch(`${API_BASE}/network/analyze`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ station_id: stationId, time_window_minutes: timeWindowMin })
+  });
+  if (!res.ok) throw new Error(`Failed to analyze network for station ${stationId}`);
+  return res.json();
+}
+
+export async function fetchTrainRecommendations(req: UserRequirementRequest): Promise<UserRequirementResponse> {
+  const res = await fetch(`${API_BASE}/recommend`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req)
+  });
+  if (!res.ok) throw new Error('Failed to fetch train recommendations');
+  return res.json();
+}
+
+export async function simulateDelayInjection(req: WhatIfSimulateRequest): Promise<WhatIfSimulateResponse> {
+  const res = await fetch(`${API_BASE}/simulate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req)
+  });
+  if (!res.ok) throw new Error('Failed to simulate delay injection');
+  return res.json();
+}
+
+export async function fetchPNRStatus(pnr: string): Promise<PNRStatusResponse> {
+  const res = await fetch(`${API_BASE}/pnr/status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pnr })
+  });
+  if (!res.ok) throw new Error(`Failed to fetch PNR status for ${pnr}`);
+  return res.json();
+}
+
+export async function sendInboundSMS(sender: string, message: string): Promise<SMSInboundResponse> {
+  const res = await fetch(`${API_BASE}/sms/inbound`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sender, message })
+  });
+  if (!res.ok) throw new Error('Failed to send inbound SMS request');
   return res.json();
 }

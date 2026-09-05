@@ -70,11 +70,19 @@ STATIONS_MASTER: Dict[str, Dict[str, Any]] = {
     "KJM": {"name": "Krishnarajapuram", "state": "Karnataka", "zone": "SWR", "lat": 12.9982, "lon": 77.6789},
     "MYS": {"name": "Mysuru Junction", "state": "Karnataka", "zone": "SWR", "lat": 12.3160, "lon": 76.6433},
     
-    # South-North Trunk
+    # South-North Trunk & East Coast
     "NGP": {"name": "Nagpur Junction", "state": "Maharashtra", "zone": "CR", "lat": 21.1528, "lon": 79.0882},
     "BPQ": {"name": "Balharshah Junction", "state": "Maharashtra", "zone": "CR", "lat": 19.8519, "lon": 79.3780},
     "WL":  {"name": "Warangal", "state": "Telangana", "zone": "SCR", "lat": 17.9689, "lon": 79.5941},
     "BZA": {"name": "Vijayawada Junction", "state": "Andhra Pradesh", "zone": "SCR", "lat": 16.5186, "lon": 80.6200},
+    "NLR": {"name": "Nellore", "state": "Andhra Pradesh", "zone": "SCR", "lat": 14.4426, "lon": 79.9865},
+    "OGL": {"name": "Ongole", "state": "Andhra Pradesh", "zone": "SCR", "lat": 15.5057, "lon": 80.0499},
+    "TEL": {"name": "Tenali Junction", "state": "Andhra Pradesh", "zone": "SCR", "lat": 16.2435, "lon": 80.6400},
+    "RJY": {"name": "Rajahmundry", "state": "Andhra Pradesh", "zone": "SCR", "lat": 17.0005, "lon": 81.7800},
+    "VSKP": {"name": "Visakhapatnam Junction", "state": "Andhra Pradesh", "zone": "ECoR", "lat": 17.7215, "lon": 83.2870},
+    "BBS": {"name": "Bhubaneswar", "state": "Odisha", "zone": "ECoR", "lat": 20.2668, "lon": 85.8436},
+    "CTC": {"name": "Cuttack Junction", "state": "Odisha", "zone": "ECoR", "lat": 20.4625, "lon": 85.8828},
+    "KGP": {"name": "Kharagpur Junction", "state": "West Bengal", "zone": "SER", "lat": 22.3361, "lon": 87.3274},
 }
 
 TRAINS_METADATA: List[Dict[str, Any]] = [
@@ -234,6 +242,78 @@ TRAINS_METADATA: List[Dict[str, Any]] = [
             {"station_code": "WL",   "sequence": 9, "arr": "19:48", "dep": "19:50", "dist": 1544.0},
             {"station_code": "BZA",  "sequence": 10, "arr": "23:15", "dep": "23:25", "dist": 1751.0},
             {"station_code": "MAS",  "sequence": 11, "arr": "06:15", "dep": "06:15", "dist": 2184.0},
+        ]
+    },
+    {
+        "train_id": "12628",
+        "train_name": "Karnataka Express",
+        "train_type": "Superfast Express",
+        "origin_station_code": "NDLS",
+        "origin_station_name": "New Delhi",
+        "destination_station_code": "MAS",
+        "destination_station_name": "MGR Chennai Central",
+        "total_distance_km": 2184.0,
+        "scheduled_departure_time": "20:20",
+        "scheduled_arrival_time": "05:45",
+        "route": [
+            {"station_code": "NDLS", "sequence": 1, "arr": "20:20", "dep": "20:20", "dist": 0.0},
+            {"station_code": "AGC",  "sequence": 2, "arr": "22:30", "dep": "22:35", "dist": 195.0},
+            {"station_code": "GWL",  "sequence": 3, "arr": "00:10", "dep": "00:12", "dist": 313.0},
+            {"station_code": "VGLJ", "sequence": 4, "arr": "01:30", "dep": "01:38", "dist": 410.0},
+            {"station_code": "BPL",  "sequence": 5, "arr": "05:40", "dep": "05:45", "dist": 702.0},
+            {"station_code": "ET",   "sequence": 6, "arr": "07:30", "dep": "07:35", "dist": 794.0},
+            {"station_code": "NGP",  "sequence": 7, "arr": "12:00", "dep": "12:05", "dist": 1092.0},
+            {"station_code": "WL",   "sequence": 8, "arr": "18:30", "dep": "18:32", "dist": 1544.0},
+            {"station_code": "BZA",  "sequence": 9, "arr": "22:00", "dep": "22:10", "dist": 1751.0},
+            {"station_code": "OGL",  "sequence": 10, "arr": "23:48", "dep": "23:50", "dist": 1890.0},
+            {"station_code": "NLR",  "sequence": 11, "arr": "01:18", "dep": "01:20", "dist": 2007.0},
+            {"station_code": "MAS",  "sequence": 12, "arr": "05:45", "dep": "05:45", "dist": 2184.0},
+        ]
+    },
+    {
+        "train_id": "12840",
+        "train_name": "Chennai - Howrah Mail",
+        "train_type": "Superfast Express",
+        "origin_station_code": "MAS",
+        "origin_station_name": "MGR Chennai Central",
+        "destination_station_code": "HWH",
+        "destination_station_name": "Howrah Junction",
+        "total_distance_km": 1661.0,
+        "scheduled_departure_time": "19:00",
+        "scheduled_arrival_time": "23:00",
+        "route": [
+            {"station_code": "MAS",  "sequence": 1, "arr": "19:00", "dep": "19:00", "dist": 0.0},
+            {"station_code": "NLR",  "sequence": 2, "arr": "21:38", "dep": "21:40", "dist": 177.0},
+            {"station_code": "OGL",  "sequence": 3, "arr": "23:08", "dep": "23:10", "dist": 294.0},
+            {"station_code": "TEL",  "sequence": 4, "arr": "00:43", "dep": "00:45", "dist": 401.0},
+            {"station_code": "BZA",  "sequence": 5, "arr": "01:25", "dep": "01:35", "dist": 433.0},
+            {"station_code": "RJY",  "sequence": 6, "arr": "03:48", "dep": "03:50", "dist": 582.0},
+            {"station_code": "VSKP", "sequence": 7, "arr": "07:50", "dep": "08:10", "dist": 783.0},
+            {"station_code": "BBS",  "sequence": 8, "arr": "14:20", "dep": "14:25", "dist": 1226.0},
+            {"station_code": "CTC",  "sequence": 9, "arr": "15:00", "dep": "15:05", "dist": 1254.0},
+            {"station_code": "KGP",  "sequence": 10, "arr": "20:15", "dep": "20:20", "dist": 1546.0},
+            {"station_code": "HWH",  "sequence": 11, "arr": "23:00", "dep": "23:00", "dist": 1661.0},
+        ]
+    },
+    {
+        "train_id": "12640",
+        "train_name": "Brindavan Express",
+        "train_type": "Intercity Superfast",
+        "origin_station_code": "MAS",
+        "origin_station_name": "MGR Chennai Central",
+        "destination_station_code": "SBC",
+        "destination_station_name": "KSR Bengaluru City Junction",
+        "total_distance_km": 360.0,
+        "scheduled_departure_time": "15:00",
+        "scheduled_arrival_time": "21:05",
+        "route": [
+            {"station_code": "MAS", "sequence": 1, "arr": "15:00", "dep": "15:00", "dist": 0.0},
+            {"station_code": "AJJ", "sequence": 2, "arr": "15:58", "dep": "16:00", "dist": 69.0},
+            {"station_code": "KPD", "sequence": 3, "arr": "16:48", "dep": "16:50", "dist": 130.0},
+            {"station_code": "JTJ", "sequence": 4, "arr": "18:08", "dep": "18:10", "dist": 214.0},
+            {"station_code": "KJM", "sequence": 5, "arr": "20:08", "dep": "20:10", "dist": 346.0},
+            {"station_code": "BNC", "sequence": 6, "arr": "20:23", "dep": "20:25", "dist": 356.0},
+            {"station_code": "SBC", "sequence": 7, "arr": "21:05", "dep": "21:05", "dist": 360.0},
         ]
     }
 ]

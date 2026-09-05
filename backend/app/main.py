@@ -10,13 +10,18 @@ from app.api.trains import router as trains_router
 from app.api.replay import router as replay_router
 from app.api.metrics import router as metrics_router
 from app.api.audit import router as audit_router
+from app.api.network import router as network_router
+from app.api.recommend import router as recommend_router
+from app.api.simulate import router as simulate_router
+from app.api.pnr import router as pnr_router
+from app.api.sms import router as sms_router
 
 app = FastAPI(
-    title="🚆 Adaptive ETA Reliability & Forecasting API",
+    title="🚆 TrackPulse — Dynamic ETA & Multi-Train Delay Intelligence API",
     description=(
         "Production-grade, reliability-aware train ETA forecasting layer for Indian Railways coaching trains. "
-        "Provides point ETA, quantile prediction intervals, calibrated reliability scores, auditable evidence, "
-        "and real-time streaming historical replay."
+        "Provides point ETA, quantile prediction intervals (P10/P50/P90), multi-train delay propagation, "
+        "passenger recommendation scoring, what-if simulations, PNR intelligence, and universal SMS gateway."
     ),
     version="1.0.0",
     docs_url="/docs",
@@ -37,6 +42,11 @@ app.include_router(trains_router, prefix="/api")
 app.include_router(replay_router, prefix="/api")
 app.include_router(metrics_router, prefix="/api")
 app.include_router(audit_router, prefix="/api")
+app.include_router(network_router, prefix="/api")
+app.include_router(recommend_router, prefix="/api")
+app.include_router(simulate_router, prefix="/api")
+app.include_router(pnr_router, prefix="/api")
+app.include_router(sms_router, prefix="/api")
 
 @app.get("/")
 def root():
